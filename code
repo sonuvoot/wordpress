@@ -1,0 +1,111 @@
+/***************Video on click mute and restart**************/
+<div class="muteButton">
+  <span id="mute-video" class="unmute"></span>
+</div>
+<video width="100%" loop="" preload="auto" id="video_0009" autoplay="autoplay" muted="false">
+<source type="video/mp4" src="/wp-content/uploads/2019/09/Business-From-Within17.mp4">
+<source type="video/webm" src="/wp-content/uploads/2019/09/Business-From-Within17.webm">
+</video>
+<div class="muteButton">
+  <span id="mute-video" class="unmute"></span>
+</div>
+<script>
+$=jQuery
+$(document).ready(function() {
+    var fromstart = true;
+    var video1 = document.getElementById('video_0009');
+$("video").prop('muted', true);
+  $("#mute-video").click( function (){
+    if( $("video").prop('muted') ) {
+        $("#mute-video").removeAttr("class");
+        $("#mute-video").attr("class","mute");
+        if(fromstart){
+            video1.pause();
+            video1.currentTime = 0;
+            video1.play();
+            fromstart = false;
+        }
+          $("video").prop('muted', false);
+    } else {
+      $("video").prop('muted', true);
+      $("#mute-video").removeAttr("class");
+        $("#mute-video").attr("class","unmute");
+    }
+  });
+ });
+ </script>
+
+/********************************************/
+Testimonial
+add_shortcode('Ourtestimonialssec', 'Our_Testimonial_functions');
+function Our_Testimonial_functions() {
+       ob_start();
+       ?>
+              <div id="testimonail-slider" class="custom-testimonials owl-carousel">
+
+    <?php 
+       global $post;
+            $args = array(
+                "post_type" => "testimonials",
+                "post_status" => "publish",   
+                'posts_per_page' => -1,
+                'order' => 'ASC'
+                );
+            $myposts = get_posts($args);
+            
+            foreach($myposts as $post):
+                setup_postdata($post);
+                $author =  get_post_meta($post->ID, 'Author-description', true); $youtubelink =  get_post_meta($post->ID, 'youtube-link', true);
+       ?>
+
+    <div class="item">
+	<div class="right-section">
+        <div class="the-contents"><iframe width="560" height="400" src="<?php echo $youtubelink; ?>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+         <p> <?php echo $value ;?></p>
+		</div>
+		<div class="left-section">
+		    <div class="the-text"><?php the_excerpt(); ?></div>
+		    <div class="title-subheads"><h2><?php the_title(); ?></h2>
+		   
+           <p> <?php echo $author ;?></p>
+        </div>
+		</div>
+    </div>
+<?php 
+                endforeach;
+            wp_reset_postdata();
+?>
+</div>
+
+<?php 
+$cont = ob_get_contents();
+ob_get_clean();
+return $cont;          
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css" />
+<script>
+jQuery('#testimonail-slider').owlCarousel({
+    loop:true,
+    margin:30,
+    nav:true,
+    autoplay:true,
+	autoHeight:true,
+	slideSpeed : 5000,
+    autoplayTimeout:19000,
+	autoplayHoverPause:true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:1
+        },
+        1000:{
+            items:1
+        }
+    }
+});
+</script>
